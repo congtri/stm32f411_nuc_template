@@ -164,7 +164,7 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)"
 # LDFLAGS
 #######################################
 # link script
-LDSCRIPT = STM32F411RCTx_FLASH.ld
+LDSCRIPT = mcu_platform/LinkerScript.ld
 
 # libraries
 LIBS = -lc -lm -lnosys
@@ -186,20 +186,24 @@ OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_SOURCES)))
 
 $(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
-	@echo "[CC]: $(notdir ($^)) --> $(BUILD_DIR)/$@"
+	@echo "[GCC]: $(notdir ($^)) --> $(BUILD_DIR)/$@"
 	@$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
 
 $(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
+	@echo "[ASM]: $(notdir ($^)) --> $(BUILD_DIR)/$@"
 	$(AS) -c $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
-	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
+	@echo "[GCC]: $^ --> $(BUILD_DIR)/$@"
+	@$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 	$(SZ) -A $@
 
 $(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
-	$(HEX) $< $@
+	@echo "Generate HEX file: $^"
+	@$(HEX) $< $@
 	
 $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
+	@echo "Generate BIN file: $^"
 	$(BIN) $< $@	
 	
 $(BUILD_DIR):
