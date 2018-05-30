@@ -1,25 +1,25 @@
-# ------------------------------------------------
+# -----------------------------------------------------------------------------
 # Generic Makefile (based on gcc)
-# ------------------------------------------------
+# -----------------------------------------------------------------------------
 
-######################################
+###############################################################################
 # target
-######################################
+###############################################################################
 TARGET = stm32f411re_nucleo
 
 
-######################################
+###############################################################################
 # building variables
-######################################
+###############################################################################
 # debug build?
 DEBUG = 1
 # optimization
 OPT = -Og
 
 
-#######################################
+###############################################################################
 # paths
-#######################################
+###############################################################################
 # STM32 driver source path
 STM32_DRIVER_SRC_DIR = mcu_platform/stm_driver/src
 # Application source path
@@ -27,20 +27,14 @@ APP_SRC_DIR = app/src
 
 # Output path
 BUILD_DIR		= output
-OBJ_OUT_DIR		= $(BUILD_DIR)/obj
-LST_OUT_DIR		= $(BUILD_DIR)/lst
-LIB_OUT_DIR		= $(BUILD_DIR)/lib
 
 ##Create Output folder
 $(shell mkdir -p ${BUILD_DIR} 2>/dev/null)
-$(shell mkdir -p ${OBJ_OUT_DIR} 2>/dev/null)
-$(shell mkdir -p ${LST_OUT_DIR} 2>/dev/null)
-$(shell mkdir -p ${LIB_OUT_DIR} 2>/dev/null)
 
 
-######################################
+###############################################################################
 # source
-######################################
+###############################################################################
 # C Stm32 driver source files
 C_SOURCES +=		$(STM32_DRIVER_SRC_DIR)/misc.c						\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_adc.c				\
@@ -89,17 +83,18 @@ C_SOURCES += \
 # ASM source
 ASM_SOURCES = mcu_platform/startup/startup_stm32f411xe.s
 
-######################################
+###############################################################################
 # firmware library
-######################################
+###############################################################################
 PERIFLIB_SOURCES = 
 
 
-#######################################
+###############################################################################
 # binaries
-#######################################
+###############################################################################
 BINPATH = 
-PREFIX = arm-none-eabi-
+TOOLCHAIN_PATH = /Applications/gcc-arm-none-eabi-5_4-2016q3/bin
+PREFIX = $(TOOLCHAIN_PATH)/arm-none-eabi-
 CC = $(PREFIX)gcc
 AS = $(PREFIX)gcc -x assembler-with-cpp
 CP = $(PREFIX)objcopy
@@ -108,9 +103,9 @@ SZ = $(PREFIX)size
 HEX = $(CP) -O ihex
 BIN = $(CP) -O binary -S
  
-#######################################
+###############################################################################
 # CFLAGS
-#######################################
+###############################################################################
 # cpu
 CPU = -mcpu=cortex-m4
 
@@ -129,20 +124,24 @@ AS_DEFS =
 
 # C defines
 C_DEFS =  \
--DUSE_HAL_DRIVER	\
--DSTM32F411xE		\
--USE_FULL_ASSERT
-
+			-DUSE_FULL_ASSERT			\
+			-DSTM32						\
+			-DSTM32F4					\
+			-DSTM32F411RETx				\
+			-DNUCLEO_F411RE				\
+			-DDEBUG						\
+			-DSTM32F411xE				\
+			-DUSE_STDPERIPH_DRIVER
 
 # AS includes
 AS_INCLUDES = 
 
 # C includes
 C_INCLUDES =  \
-                -Iapp/inc \
-                -Imcu_platform/inc \
-                -Imcu_platform/cmsis/core \
-                -Imcu_platform/cmsis/device	\
+                -Iapp/inc						\
+                -Imcu_platform/inc				\
+                -Imcu_platform/cmsis/core		\
+                -Imcu_platform/cmsis/device		\
 				-Imcu_platform/stm_driver/inc
 
 
@@ -160,9 +159,9 @@ endif
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)"
 
 
-#######################################
+###############################################################################
 # LDFLAGS
-#######################################
+###############################################################################
 # link script
 LDSCRIPT = mcu_platform/LinkerScript.ld
 
@@ -175,49 +174,45 @@ LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BU
 all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
 
 
-#######################################
+###############################################################################
 # build the application
-#######################################
+###############################################################################
 # list of objects
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 vpath %.c $(sort $(dir $(C_SOURCES)))
+
 # list of ASM program objects
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_SOURCES)))
 
 $(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
-	@echo "[GCC]: $(notdir ($^)) --> $(BUILD_DIR)/$@"
+	@echo "[GCC]: $< --> $(BUILD_DIR)/$@"
 	@$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
 
 $(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
-	@echo "[ASM]: $(notdir ($^)) --> $(BUILD_DIR)/$@"
-	$(AS) -c $(CFLAGS) $< -o $@
+	@echo "[ASM]: $< --> $(BUILD_DIR)/$@"
+	@$(AS) -c $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
 	@echo "[GCC]: $^ --> $(BUILD_DIR)/$@"
 	@$(CC) $(OBJECTS) $(LDFLAGS) -o $@
-	$(SZ) -A $@
+	@$(SZ) -A $@
 
 $(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
-	@echo "Generate HEX file: $^"
+	@echo "Generate HEX file: $@"
 	@$(HEX) $< $@
 	
 $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
-	@echo "Generate BIN file: $^"
-	$(BIN) $< $@	
+	@echo "Generate BIN file: $@"
+	@$(BIN) $< $@	
 	
 $(BUILD_DIR):
 	mkdir $@		
 
-#######################################
+###############################################################################
 # clean up
-#######################################
+###############################################################################
 clean:
-	-rm -fR .dep $(BUILD_DIR)
-  
-#######################################
-# dependencies
-#######################################
--include $(shell mkdir .dep 2>/dev/null) $(wildcard .dep/*)
+	-rm -fR $(BUILD_DIR)
 
 # *** EOF ***
