@@ -74,10 +74,16 @@ C_SOURCES +=		$(STM32_DRIVER_SRC_DIR)/misc.c						\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_usart.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_wwdg.c
 
+# Thirdparty lib
+C_SOURCES +=			$(APP_SRC_DIR)/tinyprintf.c
+
 # C Application source
 C_SOURCES += \
 					$(APP_SRC_DIR)/syscalls.c					\
 					$(APP_SRC_DIR)/system_stm32f4xx.c			\
+					$(APP_SRC_DIR)/timer_tick.c					\
+					$(APP_SRC_DIR)/serial_debug.c					\
+					$(APP_SRC_DIR)/nucleo_io.c					\
 					$(APP_SRC_DIR)/main.c
 
 # ASM source
