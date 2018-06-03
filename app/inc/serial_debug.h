@@ -11,10 +11,12 @@
 /* Define TINY_PRINTF to use tinyprintf lib */
 #define TINY_PRINTF
 /* Define SERIAL_DEBUG */
-#define SERIAL_DEBUG
+#define ENABLE_SLOG_DEBUG
+#define ENABLE_SLOG_WARN
+#define ENABLE_SLOG_ERROR
+#define ENABLE_SLOG_INFO
 
 
-#ifdef SERIAL_DEBUG
 /* Using tiny printf library */
 #ifdef TINY_PRINTF
 #include "tinyprintf.h"
@@ -23,14 +25,34 @@
 /* Using GCC retarget printf library */
 #define SERIAL_LOG(...)			printf(__VA_ARGS__);
 #endif
+
+/* Define log info */
+#ifdef ENABLE_SLOG_DEBUG
+#define SLOG_DEBUG(...)			do { SERIAL_LOG("[DEBUG]: "); SERIAL_LOG(__VA_ARGS__); SERIAL_LOG("\r\n"); } while(0);
 #else
-#define SERIAL_LOG(...)			do {} while(0);
+#define SLOG_DEBUG(...)			do {} while(0);
 #endif
 
-#define SLOG_INFO(...)			do { SERIAL_LOG("[INFO ]: "); SERIAL_LOG(__VA_ARGS__); SERIAL_LOG("\r\n"); } while(0);
-#define SLOG_DEBUG(...)			do { SERIAL_LOG("[DEBUG]: "); SERIAL_LOG(__VA_ARGS__); SERIAL_LOG("\r\n"); } while(0);
+/* Define log info */
+#ifdef ENABLE_SLOG_ERROR
 #define SLOG_ERROR(...)			do { SERIAL_LOG("[ERROR]: "); SERIAL_LOG(__VA_ARGS__); SERIAL_LOG("\r\n"); } while(0);
+#else
+#define SLOG_ERROR(...)			do {} while(0);
+#endif
+
+/* Define log info */
+#ifdef ENABLE_SLOG_WARN
 #define SLOG_WARN(...)			do { SERIAL_LOG("[WARN ]: "); SERIAL_LOG(__VA_ARGS__); SERIAL_LOG("\r\n"); } while(0);
+#else
+#define SLOG_WARN(...)			do {} while(0);
+#endif
+
+/* Define log info */
+#ifdef ENABLE_SLOG_INFO
+#define SLOG_INFO(...)			do { SERIAL_LOG("[INFO ]: "); SERIAL_LOG(__VA_ARGS__); SERIAL_LOG("\r\n"); } while(0);
+#else
+#define SLOG_INFO(...)			do {} while(0);
+#endif
 
 typedef enum
 {
