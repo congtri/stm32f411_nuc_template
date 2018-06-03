@@ -58,13 +58,13 @@ int main(void)
 
 	for(;;)
 	{
-//		SLOG_INFO("Counter: %d", i++);
-//		SLOG_INFO("On led");
-//		GPIO_SetBits(GPIOA, GPIO_Pin_5);
-//		timer_tick_delay_ms(1000u);
-//		SLOG_INFO("Off led");
-//		GPIO_ResetBits(GPIOA, GPIO_Pin_5);
-//		timer_tick_delay_ms(1000u);
+		SLOG_INFO("Counter: %d", i++);
+		SLOG_INFO("On led");
+		GPIO_SetBits(GPIOA, GPIO_Pin_5);
+		timer_tick_delay_ms(1000u);
+		SLOG_INFO("Off led");
+		GPIO_ResetBits(GPIOA, GPIO_Pin_5);
+		timer_tick_delay_ms(1000u);
 
 		if(nuc_button_status())
 		{
