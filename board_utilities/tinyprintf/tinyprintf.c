@@ -389,7 +389,7 @@ void tfp_format(void *putp, putcf putf, TFP_CONST char *fmt, va_list va)
             case 'p':
                 p.alt = 1;
 # if defined(SIZEOF_INT) && SIZEOF_POINTER <= SIZEOF_INT
-                lng = 0;
+                lng = 0; // @suppress("No break at end of case")
 # elif defined(SIZEOF_LONG) && SIZEOF_POINTER <= SIZEOF_LONG
                 lng = 1;
 # elif defined(SIZEOF_LONG_LONG) && SIZEOF_POINTER <= SIZEOF_LONG_LONG
@@ -427,7 +427,7 @@ void tfp_format(void *putp, putcf putf, TFP_CONST char *fmt, va_list va)
                 p.bf = bf;
                 break;
             case '%':
-                putf(putp, ch);
+                putf(putp, ch); // @suppress("No break at end of case")
             default:
                 break;
             }

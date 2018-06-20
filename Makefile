@@ -21,7 +21,7 @@ OPT = -Og
 # paths
 ###############################################################################
 # STM32 driver source path
-STM32_DRIVER_SRC_DIR = mcu_platform/stm_driver/src
+STM32_DRIVER_SRC_DIR = chip_platform/stm_driver/src
 # Application source path
 APP_SRC_DIR = app/src
 # Board utilities source
@@ -38,38 +38,38 @@ $(shell mkdir -p ${BUILD_DIR} 2>/dev/null)
 # source
 ###############################################################################
 # C Stm32 driver source files
-C_SOURCES +=			$(STM32_DRIVER_SRC_DIR)/misc.c						\
+C_SOURCES +=		$(STM32_DRIVER_SRC_DIR)/misc.c						\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_adc.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_can.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_crc.c				\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_cryp.c				\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_cryp_aes.c			\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_cryp_des.c			\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_cryp.c			\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_cryp_aes.c		\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_cryp_des.c		\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_cryp_tdes.c		\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dac.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dbgmcu.c			\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dcmi.c				\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dcmi.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dfsdm.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dma.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dma2d.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dsi.c				\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_exti.c				\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_exti.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_flash.c			\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_flash_ramfunc.c		\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_gpio.c				\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_hash.c				\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_hash_md5.c			\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_flash_ramfunc.c	\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_gpio.c			\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_hash.c			\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_hash_md5.c		\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_hash_sha1.c		\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_i2c.c				\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_iwdg.c				\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_iwdg.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_lptim.c			\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_ltdc.c				\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_ltdc.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_pwr.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_rcc.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_rng.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_rtc.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_sai.c				\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_sdio.c				\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_sdio.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_spi.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_syscfg.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_tim.c				\
@@ -77,9 +77,20 @@ C_SOURCES +=			$(STM32_DRIVER_SRC_DIR)/misc.c						\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_wwdg.c
 
 # Thirdparty lib
-C_SOURCES +=			$(BOARD_UTILS_SRC)/tinyprintf/tinyprintf.c			\
+C_SOURCES +=		$(BOARD_UTILS_SRC)/tinyprintf/tinyprintf.c			\
 					$(BOARD_UTILS_SRC)/nucleo_io/nucleo_io.c
 
+# FreeRTOS
+C_SOURCES +=		$(BOARD_UTILS_SRC)/FreeRTOS/croutine.c				\
+					$(BOARD_UTILS_SRC)/FreeRTOS/event_groups.c			\
+					$(BOARD_UTILS_SRC)/FreeRTOS/list.c					\
+					$(BOARD_UTILS_SRC)/FreeRTOS/queue.c					\
+					$(BOARD_UTILS_SRC)/FreeRTOS/stream_buffer.c			\
+					$(BOARD_UTILS_SRC)/FreeRTOS/tasks.c					\
+					$(BOARD_UTILS_SRC)/FreeRTOS/timers.c				\
+					$(BOARD_UTILS_SRC)/FreeRTOS/portable/GCC/ARM_CM4F/port.c	\
+					$(BOARD_UTILS_SRC)/FreeRTOS/portable/MemMang/heap_4.c
+					
 # C Application source
 C_SOURCES += \
 					$(APP_SRC_DIR)/syscalls.c					\
@@ -89,7 +100,7 @@ C_SOURCES += \
 					$(APP_SRC_DIR)/main.c
 
 # ASM source
-ASM_SOURCES = mcu_platform/startup/startup_stm32f411xe.s
+ASM_SOURCES = chip_platform/startup/startup_stm32f411xe.s
 
 ###############################################################################
 # firmware library
@@ -147,14 +158,16 @@ AS_INCLUDES =
 
 # C includes
 C_INCLUDES =  \
-				-Iapp/inc						\
-				-Imcu_platform/inc				\
-				-Imcu_platform/cmsis/core		\
-				-Imcu_platform/cmsis/device		\
-				-Imcu_platform/stm_driver/inc	\
-				-Iboard_utilities				\
-				-Iboard_utilities/tinyprintf		\
-				-Iboard_utilities/nucleo_io
+				-Iapp/inc									\
+				-Ichip_platform/inc							\
+				-Ichip_platform/cmsis/core					\
+				-Ichip_platform/cmsis/device				\
+				-Ichip_platform/stm_driver/inc				\
+				-Iboard_utilities							\
+				-Iboard_utilities/tinyprintf				\
+				-Iboard_utilities/nucleo_io					\
+				-Iboard_utilities/FreeRTOS/include			\
+				-Iboard_utilities/FreeRTOS/portable/GCC/ARM_CM4F
 
 
 # compile gcc flags
@@ -175,7 +188,7 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)"
 # LDFLAGS
 ###############################################################################
 # link script
-LDSCRIPT = mcu_platform/LinkerScript.ld
+LDSCRIPT = chip_platform/LinkerScript.ld
 
 # libraries
 LIBS = -lc -lm -lnosys

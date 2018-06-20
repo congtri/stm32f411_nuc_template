@@ -11,7 +11,7 @@
 
 static __IO uint32_t timer_tickCount;
 
-void SysTick_Handler(void)
+void  __attribute__(( weak )) SysTick_Handler(void)
 {
 	if(timer_tickCount != 0)
 		timer_tickCount--;
