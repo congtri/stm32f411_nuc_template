@@ -23,7 +23,7 @@ OPT = -Og
 # STM32 driver source path
 STM32_DRIVER_SRC_DIR = chip_platform/stm_driver/src
 # Application source path
-APP_SRC_DIR = app/src
+APP_SRC_DIR = application/src
 # Board utilities source
 BOARD_UTILS_SRC = board_utilities
 
@@ -158,7 +158,7 @@ AS_INCLUDES =
 
 # C includes
 C_INCLUDES =  \
-				-Iapp/inc									\
+				-Iapplication/inc									\
 				-Ichip_platform/inc							\
 				-Ichip_platform/cmsis/core					\
 				-Ichip_platform/cmsis/device				\
@@ -200,7 +200,7 @@ all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET
 
 
 ###############################################################################
-# build the application
+# build the applicationlication
 ###############################################################################
 # list of objects
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
