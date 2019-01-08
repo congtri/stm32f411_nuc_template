@@ -78,7 +78,7 @@ This assumes you have got the libopencm3 project downloaded in `ocm3`.
 The libopencm3 project has some good, reliable examples for each of the
 Discovery boards.
 
-Even if you don’t plan on using libopencm3, the examples they provide
+Even if you don’t plan on using lsibopencm3, the examples they provide
 will help you verify that:
 
 -   Your installed toolchain is capable of compiling for cortex M3/M4
@@ -86,7 +86,6 @@ will help you verify that:
 -   stlink is functional
 -   Your arm-none-eabi-gdb is functional
 -   Your board is functional
-
 A GDB server must be started to interact with the STM32. Depending on
 the discovery kit you are using, you must run one of the 2 commands:
 
