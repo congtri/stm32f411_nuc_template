@@ -28,9 +28,21 @@ isn’t that confusing? suggest a better name!) and comes in 2 versions
 only in the transport layer used to communicate (v1 uses SCSI passthru
 commands, while v2 uses raw USB). From a user point of view, they are
 identical.
+--------------------------------------------------------------------
+Install stlink on Mac OSX
+    Press Command+Space and type Terminal and press enter/return key.
 
+Run in Terminal app:
+    $ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null
 
-Before continuing, the following dependencies must be met:
+If the screen prompts you to enter a password, please enter your Mac's user password to continue. 
+When you type the password, it won't be displayed on screen, but the system would accept it. 
+So just type your password and press ENTER/RETURN key. Then wait for the command to finish.
+
+Run:
+    $brew install stlink
+DONE
+--------------------------------------------------------------------
 
 -   libusb-1.0
 -   cmake
