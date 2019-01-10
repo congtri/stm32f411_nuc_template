@@ -112,7 +112,7 @@ PERIFLIB_SOURCES =
 # binaries
 ###############################################################################
 BINPATH = 
-TOOLCHAIN_PATH = /Applications/gcc-arm-none-eabi-5_4-2016q3/bin
+TOOLCHAIN_PATH = /Applications/gcc-arm-none-eabi/bin
 PREFIX = $(TOOLCHAIN_PATH)/arm-none-eabi-
 CC = $(PREFIX)gcc
 AS = $(PREFIX)gcc -x assembler-with-cpp
