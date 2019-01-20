@@ -8,6 +8,10 @@
 #ifndef APP_INC_NUCLEO_IO_H_
 #define APP_INC_NUCLEO_IO_H_
 
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
 /* Define Led position on Nucleo board */
 #define NUC_LED_PIN					GPIO_Pin_5
 #define NUC_LED_PORT					GPIOA
@@ -31,5 +35,9 @@ void nuc_button_init(void);
 void nuc_led_init(void);
 
 uint8_t nuc_button_status(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* APP_INC_NUCLEO_IO_H_ */

@@ -8,6 +8,7 @@
 #include "stdint.h"
 #include "stdio.h"
 #include "stm32f4xx.h"
+#include "timer_tick.h"
 
 static __IO uint32_t timer_tickCount;
 

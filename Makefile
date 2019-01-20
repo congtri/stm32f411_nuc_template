@@ -38,38 +38,38 @@ $(shell mkdir -p ${BUILD_DIR} 2>/dev/null)
 # source
 ###############################################################################
 # C Stm32 driver source files
-C_SOURCES +=			$(STM32_DRIVER_SRC_DIR)/misc.c						\
+C_SOURCES +=		$(STM32_DRIVER_SRC_DIR)/misc.c						\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_adc.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_can.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_crc.c				\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_cryp.c				\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_cryp_aes.c			\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_cryp_des.c			\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_cryp.c			\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_cryp_aes.c		\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_cryp_des.c		\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_cryp_tdes.c		\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dac.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dbgmcu.c			\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dcmi.c				\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dcmi.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dfsdm.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dma.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dma2d.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_dsi.c				\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_exti.c				\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_exti.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_flash.c			\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_flash_ramfunc.c		\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_gpio.c				\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_hash.c				\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_hash_md5.c			\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_flash_ramfunc.c	\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_gpio.c			\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_hash.c			\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_hash_md5.c		\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_hash_sha1.c		\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_i2c.c				\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_iwdg.c				\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_iwdg.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_lptim.c			\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_ltdc.c				\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_ltdc.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_pwr.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_rcc.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_rng.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_rtc.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_sai.c				\
-					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_sdio.c				\
+					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_sdio.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_spi.c				\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_syscfg.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_tim.c				\
@@ -77,56 +77,20 @@ C_SOURCES +=			$(STM32_DRIVER_SRC_DIR)/misc.c						\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_wwdg.c
 
 # Thirdparty lib
-C_SOURCES +=			$(BOARD_UTILS_SRC)/tinyprintf/tinyprintf.c			\
+C_SOURCES +=		$(BOARD_UTILS_SRC)/tinyprintf/tinyprintf.c			\
 					$(BOARD_UTILS_SRC)/nucleo_io/nucleo_io.c
 
 # C Application source
-C_SOURCES += \
-					$(APP_SRC_DIR)/syscalls.c					\
+C_SOURCES += 		$(APP_SRC_DIR)/syscalls.c					\
 					$(APP_SRC_DIR)/system_stm32f4xx.c			\
 					$(APP_SRC_DIR)/timer_tick.c					\
-					$(APP_SRC_DIR)/serial_debug.c				\
-					$(APP_SRC_DIR)/main.c
+					$(APP_SRC_DIR)/serial_debug.c
+
+CPP_SOURCES = 		$(APP_SRC_DIR)/main.cpp
 
 # ASM source
 ASM_SOURCES = mcu_platform/startup/startup_stm32f411xe.s
 
-###############################################################################
-# firmware library
-###############################################################################
-PERIFLIB_SOURCES = 
-
-
-###############################################################################
-# binaries
-###############################################################################
-BINPATH = 
-TOOLCHAIN_PATH = /Applications/gcc-arm-none-eabi/bin
-PREFIX = $(TOOLCHAIN_PATH)/arm-none-eabi-
-CC = $(PREFIX)gcc
-AS = $(PREFIX)gcc -x assembler-with-cpp
-CP = $(PREFIX)objcopy
-AR = $(PREFIX)ar
-SZ = $(PREFIX)size
-HEX = $(CP) -O ihex
-BIN = $(CP) -O binary -S
- 
-###############################################################################
-# CFLAGS
-###############################################################################
-# cpu
-CPU = -mcpu=cortex-m4
-
-# fpu
-FPU = -mfpu=fpv4-sp-d16
-
-# float-abi
-FLOAT-ABI = -mfloat-abi=hard
-
-# mcu
-MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
-
-# macros for gcc
 # AS defines
 AS_DEFS = 
 
@@ -147,29 +111,73 @@ AS_INCLUDES =
 
 # C includes
 C_INCLUDES =  \
-				-Iapp/inc						\
-				-Imcu_platform/inc				\
-				-Imcu_platform/cmsis/core		\
-				-Imcu_platform/cmsis/device		\
-				-Imcu_platform/stm_driver/inc	\
-				-Iboard_utilities				\
-				-Iboard_utilities/tinyprintf		\
-				-Iboard_utilities/nucleo_io
+				-I"app"						\
+				-I"app/inc"						\
+				-I"mcu_platform/inc"			\
+				-I"mcu_platform/cmsis/core"		\
+				-I"mcu_platform/cmsis/device"	\
+				-I"mcu_platform/stm_driver/inc"	\
+				-I"board_utilities"				\
+				-I"board_utilities/tinyprintf"	\
+				-I"board_utilities/nucleo_io"
+###############################################################################
+# firmware library
+###############################################################################
+PERIFLIB_SOURCES = 
 
 
-# compile gcc flags
-ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
+###############################################################################
+# binaries
+###############################################################################
+BINPATH = 
+TOOLCHAIN_PATH		= /Applications/gcc-arm-none-eabi/bin
+PREFIX				= $(TOOLCHAIN_PATH)/arm-none-eabi-
+CC					= $(PREFIX)gcc
+CPP					= $(PREFIX)g++
+AS					= $(PREFIX)gcc -x assembler-with-cpp
+CP					= $(PREFIX)objcopy
+AR					= $(PREFIX)ar
+SZ					= $(PREFIX)size
+HEX					= $(CP) -O ihex
+BIN					= $(CP) -O binary -S
+ 
+###############################################################################
+# CFLAGS
+###############################################################################
+# cpu
+CPU = -mcpu=cortex-m4
 
-CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
+# instruction
+INSTRUCTION = -mthumb
 
-ifeq ($(DEBUG), 1)
-CFLAGS += -g -gdwarf-2
-endif
+# fpu
+FLOAT_ABI = -mfloat-abi=hard
 
+# mcu flag
+MCU = $(CPU) $(INSTRUCTION) $(FLOAT_ABI)
+
+# compiler options
+OPTIMIZE = -Og
+WARNING  = -Wall
+CPP_STD  = -std=gnu++11
+DEPENDENCY_INFO = -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)"
+
+# c/c++ cross compiler flags
+CC_FLAGS  = $(MCU) -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants
+CC_FLAGS += $(OPTIMIZE) $(WARNING)
+CC_FLAGS += $(C_DEFS) $(C_INCLUDES)
 
 # Generate dependency information
-CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)"
+CC_FLAGS += $(DEPENDENCY_INFO)
 
+# asm flags
+AS_FLAGS  = $(MCU) -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants
+AS_FLAGS += $(OPTIMIZE) $(WARNING)
+AS_FLAGS += $(AS_DEFS) $(AS_INCLUDES)
+
+#ifeq ($(DEBUG), 1)
+#CFLAGS += -g -gdwarf-2
+#endif
 
 ###############################################################################
 # LDFLAGS
@@ -180,7 +188,7 @@ LDSCRIPT = mcu_platform/LinkerScript.ld
 # libraries
 LIBS = -lc -lm -lnosys
 LIBDIR =
-LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
+LD_FLAGS  = -g3 -Xlinker --gc-sections -T"$(LDSCRIPT)" $(LIBS) -Wl,-Map="$(BUILD_DIR)/$(TARGET).map" --specs=nano.specs
 
 # default action: build all
 all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
@@ -189,31 +197,60 @@ all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET
 ###############################################################################
 # build the application
 ###############################################################################
-# list of objects
-OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
+# list of C objects
+OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 vpath %.c $(sort $(dir $(C_SOURCES)))
+
+# list of C++ objects
+OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(CPP_SOURCES:.cpp=.o)))
+vpath %.cpp $(sort $(dir $(CPP_SOURCES)))
 
 # list of ASM program objects
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_SOURCES)))
 
+
+#-------------------------------------------------------
+# Generate Objiect files from C++ files
+#-------------------------------------------------------
+$(BUILD_DIR)/%.o: %.cpp Makefile | $(BUILD_DIR)
+	@echo "[G++]: $< --> $@"
+	@$(CPP) $(CC_FLAGS) -g3 -std=gnu++11 -fabi-version=0 -fno-exceptions -fno-rtti -fno-use-cxa-atexit -fno-threadsafe-statics \
+			-Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) -c -o "$@" "$<"
+
+#-------------------------------------------------------
+# Generate Objiect files from C files
+#-------------------------------------------------------
 $(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
-	@echo "[GCC]: $< --> $(BUILD_DIR)/$@"
-	@$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
+	@echo "[GCC]: $< --> $@"
+	@$(CC) $(CC_FLAGS) -g3 -std=gnu11 -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) -c -o "$@" "$<"
+	
 
+#-------------------------------------------------------
+# Generate Objiect files from ASM files
+#-------------------------------------------------------
 $(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
-	@echo "[ASM]: $< --> $(BUILD_DIR)/$@"
-	@$(AS) -c $(CFLAGS) $< -o $@
+	@echo "[ASM]: $< --> $@"
+	@$(AS) -c $(AS_FLAGS) $< -o $@
 
-$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
-	@echo "[GCC]: $^ --> $(BUILD_DIR)/$@"
-	@$(CC) $(OBJECTS) $(LDFLAGS) -o $@
+#-------------------------------------------------------
+# Generate ELF files from object files
+#-------------------------------------------------------
+$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) | Makefile
+	@echo "Generate ELF file: $@"
+	@$(CPP) $(CC_FLAGS) $(LD_FLAGS) -o $@ $(OBJECTS)
 	@$(SZ) -A $@
 
+#-------------------------------------------------------
+# Generate HEX files from ELF files
+#-------------------------------------------------------
 $(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	@echo "Generate HEX file: $@"
 	@$(HEX) $< $@
-	
+
+#-------------------------------------------------------
+# Generate BIN files from ELF files
+#-------------------------------------------------------
 $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	@echo "Generate BIN file: $@"
 	@$(BIN) $< $@	

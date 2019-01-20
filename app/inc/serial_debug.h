@@ -8,6 +8,10 @@
 #ifndef APP_INC_SERIAL_DEBUG_H_
 #define APP_INC_SERIAL_DEBUG_H_
 
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
 /* Define TINY_PRINTF to use tinyprintf lib */
 #define TINY_PRINTF
 /* Define SERIAL_DEBUG */
@@ -71,6 +75,8 @@ void serial_puts(char *str);
 char serial_getc(void);
 void serial_gets(char *str, int len);
 
-
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* APP_INC_SERIAL_DEBUG_H_ */
