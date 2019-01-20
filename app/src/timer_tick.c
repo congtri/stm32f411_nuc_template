@@ -12,7 +12,7 @@
 
 static __IO uint32_t timer_tickCount;
 
-void SysTick_Handler(void)
+void  __attribute__(( weak )) SysTick_Handler(void)
 {
 	if(timer_tickCount != 0)
 		timer_tickCount--;
@@ -28,5 +28,3 @@ void timer_tick_delay_ms(__IO uint32_t time)
 	timer_tickCount = time;
 	while(timer_tickCount != 0);
 }
-
-

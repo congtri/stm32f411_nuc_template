@@ -76,6 +76,17 @@ C_SOURCES +=		$(STM32_DRIVER_SRC_DIR)/misc.c						\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_usart.c			\
 					$(STM32_DRIVER_SRC_DIR)/stm32f4xx_wwdg.c
 
+# FreeRTOS
+C_SOURCES +=		$(BOARD_UTILS_SRC)/FreeRTOS/croutine.c				\
+					$(BOARD_UTILS_SRC)/FreeRTOS/event_groups.c			\
+					$(BOARD_UTILS_SRC)/FreeRTOS/list.c					\
+					$(BOARD_UTILS_SRC)/FreeRTOS/queue.c					\
+					$(BOARD_UTILS_SRC)/FreeRTOS/stream_buffer.c			\
+					$(BOARD_UTILS_SRC)/FreeRTOS/tasks.c					\
+					$(BOARD_UTILS_SRC)/FreeRTOS/timers.c				\
+					$(BOARD_UTILS_SRC)/FreeRTOS/portable/GCC/ARM_CM4F/port.c	\
+					$(BOARD_UTILS_SRC)/FreeRTOS/portable/MemMang/heap_4.c
+
 # Thirdparty lib
 C_SOURCES +=		$(BOARD_UTILS_SRC)/tinyprintf/tinyprintf.c			\
 					$(BOARD_UTILS_SRC)/nucleo_io/nucleo_io.c
@@ -111,15 +122,15 @@ AS_INCLUDES =
 
 # C includes
 C_INCLUDES =  \
-				-I"app"						\
-				-I"app/inc"						\
-				-I"mcu_platform/inc"			\
-				-I"mcu_platform/cmsis/core"		\
-				-I"mcu_platform/cmsis/device"	\
-				-I"mcu_platform/stm_driver/inc"	\
-				-I"board_utilities"				\
-				-I"board_utilities/tinyprintf"	\
-				-I"board_utilities/nucleo_io"
+				-I"app/inc"											\
+				-I"mcu_platform/inc"								\
+				-I"mcu_platform/cmsis/core"							\
+				-I"mcu_platform/cmsis/device"						\
+				-I"mcu_platform/stm_driver/inc"						\
+				-I"board_utilities/tinyprintf"						\
+				-I"board_utilities/nucleo_io"						\
+				-I"board_utilities/FreeRTOS/include"				\
+				-I"board_utilities/FreeRTOS/portable/GCC/ARM_CM4F"
 ###############################################################################
 # firmware library
 ###############################################################################

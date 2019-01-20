@@ -6,6 +6,13 @@
 #include "timer_tick.h"
 #include "serial_debug.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
+#include "FreeRTOSConfig.h"
+
+#define LED_TASK_STACK_SIZE			( configMINIMAL_STACK_SIZE )
+#define LED_TASK_PRIORITY			( tskIDLE_PRIORITY + 1 )
+
 void osc_freq_check(void)
 {
 	RCC_ClocksTypeDef RCC_Clock;
@@ -48,34 +55,43 @@ void osc_freq_check(void)
 }
 
 
+void vLEDTask(void * pvArg)
+{
+	nuc_led_init();
+	while(1)
+	{
+		SLOG_INFO("On led");
+		nuc_led_set();
+		vTaskDelay(500);
+
+		SLOG_INFO("Off led");
+		nuc_led_clr();
+		vTaskDelay(500);
+	}
+}
+
 int main(void)
 {
-	timer_tick_init();
+	//timer_tick_init();
 	serial_debug_init(BAUD_115200);
 	nuc_led_init();
 	nuc_button_init();
 
-	timer_tick_delay_ms(100);
+	//timer_tick_delay_ms(100);
 	osc_freq_check();
 
-	int btn_cnt = 0;
+	xTaskCreate(vLEDTask,
+				NULL,
+				LED_TASK_STACK_SIZE,
+				NULL,
+				LED_TASK_PRIORITY,
+				NULL);
+	/* Start the scheduler. */
+	vTaskStartScheduler();
 
-	for(;;)
-	{
-		SLOG_INFO("On led");
-		GPIO_SetBits(GPIOA, GPIO_Pin_5);
-		timer_tick_delay_ms(1000u);
-		SLOG_INFO("Off led");
-		GPIO_ResetBits(GPIOA, GPIO_Pin_5);
-		timer_tick_delay_ms(1000u);
-
-		if(nuc_button_status())
-		{
-			btn_cnt++;
-			SLOG_INFO("Button pressed %d", btn_cnt);
-		}
-	}
-
+	/* Code shouldn't go here */
+	SLOG_ERROR("FreeRTOS init error");
+	while(1);
 	return 0;
 }
 
