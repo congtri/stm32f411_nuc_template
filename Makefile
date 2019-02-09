@@ -89,7 +89,9 @@ C_SOURCES +=		$(BOARD_UTILS_SRC)/FreeRTOS/croutine.c				\
 
 # Thirdparty lib
 C_SOURCES +=		$(BOARD_UTILS_SRC)/tinyprintf/tinyprintf.c			\
-					$(BOARD_UTILS_SRC)/nucleo_io/nucleo_io.c
+					$(BOARD_UTILS_SRC)/nucleo_io/nucleo_io.c			\
+					$(BOARD_UTILS_SRC)/diag/trace_impl.c				\
+					$(BOARD_UTILS_SRC)/diag/Trace.c
 
 # C Application source
 C_SOURCES += 		$(APP_SRC_DIR)/syscalls.c					\
@@ -107,6 +109,7 @@ AS_DEFS =
 
 # C defines
 C_DEFS =  \
+			-DTRACE						\
 			-DUSE_FULL_ASSERT			\
 			-DSTM32						\
 			-DSTM32F4					\
@@ -128,6 +131,7 @@ C_INCLUDES =  \
 				-I"mcu_platform/cmsis/device"						\
 				-I"mcu_platform/stm_driver/inc"						\
 				-I"board_utilities/tinyprintf"						\
+				-I"board_utilities/diag"							\
 				-I"board_utilities/nucleo_io"						\
 				-I"board_utilities/FreeRTOS/include"				\
 				-I"board_utilities/FreeRTOS/portable/GCC/ARM_CM4F"

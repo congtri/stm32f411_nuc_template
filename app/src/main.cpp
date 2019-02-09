@@ -62,11 +62,19 @@ void vLEDTask(void * pvArg)
 	{
 		SLOG_INFO("On led");
 		nuc_led_set();
-		vTaskDelay(500);
+		vTaskDelay(50);
 
 		SLOG_INFO("Off led");
 		nuc_led_clr();
-		vTaskDelay(500);
+		vTaskDelay(50);
+	}
+}
+
+void vLogTask(void * pvArg)
+{
+	while(1)
+	{
+		SLOG_INFO("Line [%d] - File: %s", __LINE__, __FILE__);
 	}
 }
 
@@ -84,14 +92,23 @@ int main(void)
 				NULL,
 				LED_TASK_STACK_SIZE,
 				NULL,
+				LED_TASK_PRIORITY + 1,
+				NULL);
+
+	xTaskCreate(vLogTask,
+				NULL,
+				LED_TASK_STACK_SIZE,
+				NULL,
 				LED_TASK_PRIORITY,
 				NULL);
+
 	/* Start the scheduler. */
 	vTaskStartScheduler();
 
 	/* Code shouldn't go here */
 	SLOG_ERROR("FreeRTOS init error");
 	while(1);
+
 	return 0;
 }
 
