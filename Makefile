@@ -91,7 +91,8 @@ C_SOURCES +=		$(BOARD_UTILS_SRC)/FreeRTOS/croutine.c				\
 C_SOURCES +=		$(BOARD_UTILS_SRC)/tinyprintf/tinyprintf.c			\
 					$(BOARD_UTILS_SRC)/nucleo_io/nucleo_io.c			\
 					$(BOARD_UTILS_SRC)/diag/trace_impl.c				\
-					$(BOARD_UTILS_SRC)/diag/Trace.c
+					$(BOARD_UTILS_SRC)/diag/Trace.c						\
+					$(BOARD_UTILS_SRC)/ring_buffer/ring_buffer.c
 
 # C Application source
 C_SOURCES += 		$(APP_SRC_DIR)/syscalls.c					\
@@ -133,6 +134,7 @@ C_INCLUDES =  \
 				-I"board_utilities/tinyprintf"						\
 				-I"board_utilities/diag"							\
 				-I"board_utilities/nucleo_io"						\
+				-I"board_utilities/ring_buffer"						\
 				-I"board_utilities/FreeRTOS/include"				\
 				-I"board_utilities/FreeRTOS/portable/GCC/ARM_CM4F"
 ###############################################################################
@@ -254,6 +256,7 @@ $(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
 $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) | Makefile
 	@echo "Generate ELF file: $@"
 	@$(CPP) $(CC_FLAGS) $(LD_FLAGS) -o $@ $(OBJECTS)
+	@$(SZ) $@
 	@$(SZ) -A $@
 
 #-------------------------------------------------------
