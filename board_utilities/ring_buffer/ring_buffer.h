@@ -38,6 +38,7 @@ typedef struct
 void initRingBuffer(ring_buffer_ts *ring_buf, uint8_t *element_data, int element_size);
 ring_buffer_status_te writeToRingBuffer(ring_buffer_ts *rbuf, const char *data, int len, uint8_t overwrite);
 ring_buffer_status_te readFromRingBuffer(ring_buffer_ts *rbuf, uint8_t *data, int len);
+int isRingBufferDataAvailable(ring_buffer_ts *rbuf);
 
 #ifdef __cplusplus
 }

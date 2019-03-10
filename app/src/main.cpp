@@ -23,60 +23,76 @@ void osc_freq_check(void)
 
 	/* get clock source */
 	Clock_soucre = RCC_GetSYSCLKSource();
-
 	/* print values to console */
-	SLOG_INFO("\n\r");
-	SLOG_INFO("====================================================");
-	SLOG_INFO("|              TEST Oscillator Clock               |");
-	SLOG_INFO("====================================================");
-	SLOG_INFO("SYSCLK Freq      : %u", (unsigned int )RCC_Clock.SYSCLK_Frequency);
-	SLOG_INFO("HCLK Freq  (AHB) : %u", (unsigned int )RCC_Clock.HCLK_Frequency);
-	SLOG_INFO("PCLK1 Freq (APB1): %u", (unsigned int )RCC_Clock.PCLK1_Frequency);
-	SLOG_INFO("PCLK2 Freq (APB2): %u", (unsigned int )RCC_Clock.PCLK2_Frequency);
-	SLOG_INFO("System Core Clock: %u", (unsigned int )SystemCoreClock);
-	SLOG_INFO("Clock source     : %u", (unsigned int )Clock_soucre);
+	printf("\n\r");
+	printf("====================================================\n\r");
+	printf("|              TEST Oscillator Clock               |\n\r");
+	printf("====================================================\n\r");
+	printf("SYSCLK Freq      : %u\n\r", (unsigned int )RCC_Clock.SYSCLK_Frequency);
+	printf("HCLK Freq  (AHB) : %u\n\r", (unsigned int )RCC_Clock.HCLK_Frequency);
+	printf("PCLK1 Freq (APB1): %u\n\r", (unsigned int )RCC_Clock.PCLK1_Frequency);
+	printf("PCLK2 Freq (APB2): %u\n\r", (unsigned int )RCC_Clock.PCLK2_Frequency);
+	printf("System Core Clock: %u\n\r", (unsigned int )SystemCoreClock);
+	printf("Clock source     : %u\n\r", (unsigned int )Clock_soucre);
 	switch(Clock_soucre)
 	{
 		case 0:
-			SLOG_INFO("HSI used as system clock")
-			;
+			printf("HSI used as system clock\n\r");
 			break;
 		case 4:
-			SLOG_INFO("HSE used as system clock")
-			;
+			printf("HSE used as system clock\n\r");
 			break;
 		case 8:
-			SLOG_INFO("PLL used as system clock")
-			;
+			printf("PLL used as system clock\n\r");
 			break;
 	}
 
-	SERIAL_LOG("\n\n\r");
+	printf("\n\n\r");
 }
 
 
 void vLEDTask(void * pvArg)
 {
 	nuc_led_init();
+
 	while(1)
 	{
 		SLOG_INFO("On led");
 		nuc_led_set();
-		vTaskDelay(50);
+		vTaskDelay(100);
 
 		SLOG_INFO("Off led");
 		nuc_led_clr();
-		vTaskDelay(50);
+		vTaskDelay(100);
+
 	}
 }
 
 void vLogTask(void * pvArg)
 {
+	int i = 0;
 	while(1)
 	{
-		SLOG_INFO("Line [%d] - File: %s", __LINE__, __FILE__);
+		SLOG_INFO("Counter 1: [%d]", i);
+		int x = xPortGetFreeHeapSize();
+		SLOG_INFO("Heap size: %d", x);
+		i++;
+		vTaskDelay(500);
 	}
 }
+
+void vLogTask_2(void * pvArg)
+{
+	int i = 0;
+	while(1)
+	{
+		SLOG_INFO("Counter 2: [%d]", i);
+		i++;
+		vTaskDelay(50);
+	}
+}
+
+
 
 int main(void)
 {
@@ -90,23 +106,37 @@ int main(void)
 
 	xTaskCreate(vLEDTask,
 				NULL,
-				LED_TASK_STACK_SIZE,
+				50,
 				NULL,
 				LED_TASK_PRIORITY + 1,
 				NULL);
 
 	xTaskCreate(vLogTask,
 				NULL,
-				LED_TASK_STACK_SIZE,
+				50,
 				NULL,
-				LED_TASK_PRIORITY,
+				LED_TASK_PRIORITY + 4,
+				NULL);
+
+	xTaskCreate(vLogTask_2,
+					NULL,
+					50,
+					NULL,
+					LED_TASK_PRIORITY + 4,
+					NULL);
+
+	xTaskCreate(taskPrintLog,
+				NULL,
+				50,
+				NULL,
+				LED_TASK_PRIORITY + 5,
 				NULL);
 
 	/* Start the scheduler. */
 	vTaskStartScheduler();
 
 	/* Code shouldn't go here */
-	SLOG_ERROR("FreeRTOS init error");
+	printf("FreeRTOS init error");
 	while(1);
 
 	return 0;
@@ -114,7 +144,7 @@ int main(void)
 
 void assert_failed(uint8_t* file, uint32_t line)
 {
-	SLOG_ERROR("File: %s - Line: %d: asert failed", file, (unsigned int )line);
+	printf("File: %s - Line: %d: asert failed", file, (unsigned int )line);
 	while(1)
 		;
 }

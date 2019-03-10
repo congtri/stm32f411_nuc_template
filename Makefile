@@ -90,8 +90,7 @@ C_SOURCES +=		$(BOARD_UTILS_SRC)/FreeRTOS/croutine.c				\
 # Thirdparty lib
 C_SOURCES +=		$(BOARD_UTILS_SRC)/tinyprintf/tinyprintf.c			\
 					$(BOARD_UTILS_SRC)/nucleo_io/nucleo_io.c			\
-					$(BOARD_UTILS_SRC)/diag/trace_impl.c				\
-					$(BOARD_UTILS_SRC)/diag/Trace.c						\
+					$(BOARD_UTILS_SRC)/log/log.c						\
 					$(BOARD_UTILS_SRC)/ring_buffer/ring_buffer.c
 
 # C Application source
@@ -132,7 +131,7 @@ C_INCLUDES =  \
 				-I"mcu_platform/cmsis/device"						\
 				-I"mcu_platform/stm_driver/inc"						\
 				-I"board_utilities/tinyprintf"						\
-				-I"board_utilities/diag"							\
+				-I"board_utilities/log"							\
 				-I"board_utilities/nucleo_io"						\
 				-I"board_utilities/ring_buffer"						\
 				-I"board_utilities/FreeRTOS/include"				\

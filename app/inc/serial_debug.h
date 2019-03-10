@@ -24,7 +24,9 @@
 /* Using tiny printf library */
 #ifdef TINY_PRINTF
 #include "tinyprintf.h"
-#define SERIAL_LOG(...)			tfp_printf(__VA_ARGS__)
+#include "log.h"
+//#define SERIAL_LOG(...)			tfp_printf(__VA_ARGS__)
+#define SERIAL_LOG(...)			log_printf(__VA_ARGS__)
 #else
 /* Using GCC retarget printf library */
 #define SERIAL_LOG(...)			printf(__VA_ARGS__);

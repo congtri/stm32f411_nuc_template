@@ -111,5 +111,9 @@ ring_buffer_status_te readFromRingBuffer(ring_buffer_ts *rbuf, uint8_t *data, in
 	{
 		return READ_SIZE_ERROR;
 	}
+}
 
+int isRingBufferDataAvailable(ring_buffer_ts *rbuf)
+{
+	return (rbuf->size - rbuf->rest_space);
 }
