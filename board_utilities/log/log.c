@@ -9,11 +9,11 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#define LOG_BUF_SIZE		(1024)
+#define LOG_BUF_SIZE		(5 * 1024)
 #define READ_BUF_SIZE		(128)
 #define W_BUF_SIZE			(128)
 
-static char wbuf[LOG_BUF_SIZE];
+static char wbuf[W_BUF_SIZE];
 static char buf_data[LOG_BUF_SIZE];
 ring_buffer_ts rlog;
 // ----------------------------------------------------------------------------
