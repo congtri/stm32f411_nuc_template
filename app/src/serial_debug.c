@@ -144,6 +144,19 @@ void serial_puts(char *str)
 	}
 }
 
+void serial_put_array(char *arr, int len)
+{
+	int i = 0;
+	while(len)
+	{
+		USART_SendData(USART2, arr[i]);
+		/* Loop until data complete tranmission */
+		while(USART_GetFlagStatus(USART2, USART_FLAG_TC) == 0);
+		i++;
+		len--;
+	}
+}
+
 char serial_getc(void)
 {
 	while (USART_GetFlagStatus(USART2, USART_FLAG_RXNE) == RESET);

@@ -73,6 +73,7 @@ void serial_debug_init(serial_baud_t baud);
 
 void serial_putc(char c);
 void serial_puts(char *str);
+void serial_put_array(char *arr, int len);
 
 char serial_getc(void);
 void serial_gets(char *str, int len);
