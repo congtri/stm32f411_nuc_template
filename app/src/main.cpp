@@ -10,8 +10,23 @@
 #include "task.h"
 #include "FreeRTOSConfig.h"
 
+#define TASK_MAX_PRORITY			configMAX_PRIORITIES
 #define LED_TASK_STACK_SIZE			( configMINIMAL_STACK_SIZE )
 #define LED_TASK_PRIORITY			( tskIDLE_PRIORITY + 1 )
+
+typedef struct
+{
+	char *task_name;
+	int task_cyclic;
+} task_info_ts;
+
+
+task_info_ts task_10ms = { "Task demo 10ms", 10};
+task_info_ts task_50ms = { "Task demo 50ms", 50};
+task_info_ts task_100ms = { "Task demo 100ms", 100};
+task_info_ts task_200ms = { "Task demo 200ms", 200};
+task_info_ts task_500ms = { "Task demo 500ms", 500};
+task_info_ts task_1000ms = { "Task demo 1000ms", 1000};
 
 void osc_freq_check(void)
 {
@@ -81,21 +96,26 @@ void vLogTask(void * pvArg)
 	}
 }
 
-void vLogTask_2(void * pvArg)
+
+void vTaskDemo1(void *arg)
 {
+	task_info_ts *t = (task_info_ts *) arg;
+	int task_cyclic = (int)t->task_cyclic;
+	char *task_name = t->task_name;
 	int i = 0;
+
 	while(1)
 	{
-		SLOG_INFO("Counter 2: [%d]", i);
+		SLOG_INFO("%s - counter: %d", task_name, i);
 		i++;
-		vTaskDelay(50);
+		vTaskDelay(task_cyclic);
 	}
 }
 
-
-
 int main(void)
 {
+
+
 	//timer_tick_init();
 	serial_debug_init(BAUD_115200);
 	nuc_led_init();
@@ -108,28 +128,56 @@ int main(void)
 				NULL,
 				50,
 				NULL,
-				LED_TASK_PRIORITY + 1,
+				LED_TASK_PRIORITY + 2,
 				NULL);
 
-	xTaskCreate(vLogTask,
-				NULL,
-				50,
-				NULL,
-				LED_TASK_PRIORITY + 4,
-				NULL);
+//	xTaskCreate(vTaskDemo1,
+//					NULL,
+//					50,
+//					(void *) &task_10ms,
+//					LED_TASK_PRIORITY + 1,
+//					NULL);
 
-	xTaskCreate(vLogTask_2,
+	xTaskCreate(vTaskDemo1,
 					NULL,
 					50,
+					(void *) &task_50ms,
+					LED_TASK_PRIORITY + 1,
+					NULL);
+
+	xTaskCreate(vTaskDemo1,
 					NULL,
-					LED_TASK_PRIORITY + 4,
+					50,
+					(void *) &task_100ms,
+					LED_TASK_PRIORITY + 1,
+					NULL);
+
+	xTaskCreate(vTaskDemo1,
+					NULL,
+					50,
+					(void *) &task_200ms,
+					LED_TASK_PRIORITY + 1,
+					NULL);
+
+	xTaskCreate(vTaskDemo1,
+					NULL,
+					50,
+					(void *) &task_500ms,
+					LED_TASK_PRIORITY + 1,
+					NULL);
+
+	xTaskCreate(vTaskDemo1,
+					NULL,
+					50,
+					(void *) &task_1000ms,
+					LED_TASK_PRIORITY + 1,
 					NULL);
 
 	xTaskCreate(taskPrintLog,
 				NULL,
-				50,
+				128,
 				NULL,
-				LED_TASK_PRIORITY + 5,
+				TASK_MAX_PRORITY - 1,
 				NULL);
 
 	/* Start the scheduler. */
