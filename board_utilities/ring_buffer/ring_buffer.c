@@ -38,7 +38,7 @@ void initRingBuffer(ring_buffer_ts *ring_buf, uint8_t *element_data, int element
 
 ring_buffer_status_te writeToRingBuffer(ring_buffer_ts *rbuf, const char *data, int len, uint8_t overwrite)
 {
-	/* Data will not be overwrite */
+	/* Old data will not be overwritten */
 	if(!overwrite && len <= rbuf->real_space)
 	{
 		write_data(rbuf, data, len);
@@ -47,7 +47,7 @@ ring_buffer_status_te writeToRingBuffer(ring_buffer_ts *rbuf, const char *data, 
 
 		return NO_ERROR;
 	}
-	/* New data will be overwrite on old data */
+	/* Old data will be overwritten by new data */
 	else if(overwrite && len <= rbuf->size - 1)
 	{
 		write_data(rbuf, data, len);
